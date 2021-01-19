@@ -1,19 +1,15 @@
 from django.contrib.auth import get_user_model
-from django.views.generic import FormView
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.core.mail import EmailMessage
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
-from django.core.mail import send_mail
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.http import HttpResponse
 from django.template.loader import render_to_string
+from django.views.generic import FormView
+from django.core.mail import send_mail
+from django.utils.encoding import force_bytes, force_text
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
+from config.settings import EMAIL_HOST_USER
 from .forms import RegistrationForm
 from .utils import account_activation_token
-from django.urls import reverse
-
 
 
 User = get_user_model()
@@ -21,49 +17,36 @@ User = get_user_model()
 
 class RegisterFormView(FormView):
     form_class = RegistrationForm
-    success_url = '/'
-    template_name = 'authentication/register.html'
+    success_url = '/login/'
+    template_name = 'registration/register.html'
 
     def form_valid(self, form):
-        email = self.request.POST["email"]
-        password = self.request.POST["password1"]
+        user = form.save(commit=False)
+        user.is_active = False
+        user.save()
+        current_site = get_current_site(self.request)
+        mail_subject = 'Activate your account.'
+        message = render_to_string('registration/activate_account.html', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': account_activation_token.make_token(user),
+                })
+        to_email = form.cleaned_data.get('email')
+        send_mail(mail_subject, message, EMAIL_HOST_USER, [to_email])
+        return super(RegisterFormView, self).form_valid(form)
 
-        context = {
-            'fieldValues': self.request.POST
-        }
 
-        if not User.objects.filter(email=email).exists():
-            if len(password) < 6:
-                messages.error(self.request, 'Password too short')
-                return render(self.request, 'authentication/register.html', context)
-
-            user = User.objects.create_user(email=email, password=password)
-            user.set_password(password)
-            user.is_active = False
-            user.save()
-            current_site = get_current_site(self.request)
-            email_body = {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
-            }
-
-            link = reverse('activate', kwargs={
-                           'uidb64': email_body['uid'], 'token': email_body['token']})
-
-            email_subject = 'Activate your account'
-
-            activate_url = 'http://'+current_site.domain+link
-
-            email = EmailMessage(
-                email_subject,
-                'Hi '+user.username + ', Please the link below to activate your account \n'+activate_url,
-                'noreply@semycolon.com',
-                [email],
-            )
-            email.send(fail_silently=False)
-            messages.success(self.request, 'Account successfully created')
-            return render(self.request, 'authentication/register.html')
-
-        return render(self.request, 'authentication/register.html')
+def activate(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+    else:
+        return HttpResponse('Activation link is invalid!')

@@ -31,11 +31,9 @@
                 <script src='https://www.google.com/recaptcha/api.js'></script>
                 <div class="form-group g-recaptcha" data-sitekey="6Le1nSQaAAAAAIhrjI1ZqI0Bs7lmUh9zidoMt_gS"></div>
 
-                {% if messages %}
-                    {% for message in messages %}
-                        {{ message }}
-                    {% endfor %}
-                {% endif %}
+                <div class="form-textbox">
+                    {{ form.errors }}
+                </div>
 
                 <div class="form-textbox">
                     <input type="submit" name="submit" id="submit" class="submit" value="Create account"/>
@@ -43,7 +41,7 @@
             </form>
 
             <p class="loginhere">
-                Already have an account ?<a href="#" class="loginhere-link"> Log in</a>
+                Already have an account ?<a href="{% url 'login' %}" class="loginhere-link"> Log in</a>
             </p>
         </div>
     </div>
