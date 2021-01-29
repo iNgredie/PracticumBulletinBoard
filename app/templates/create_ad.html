@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<body>
+<div class="main">
+
+    <h1>Sign up</h1>
+    <div class="container">
+        <div class="sign-up-content">
+            <form method="POST" class="signup-form">
+                <h2 class="form-title">Registration</h2>
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Title</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1">
+                    {% csrf_token %}
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Category</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        {% csrf_token %}
+                        {% for field in form.category %}
+                            <option>{{ field.title }}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">City</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        {% csrf_token %}
+                        {% for field in form.city %}
+                            <option>{{ field.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlFile1">Photos</label>
+                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Status</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <option>{{ field.status }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <script src='https://www.google.com/recaptcha/api.js'></script>
+                <div class="form-group g-recaptcha" data-sitekey="6Le1nSQaAAAAAIhrjI1ZqI0Bs7lmUh9zidoMt_gS"></div>
+
+                <div class="form-textbox">
+                    {{ form.errors }}
+                </div>
+
+                <div class="form-textbox">
+                    <input type="submit" name="submit" id="submit" class="submit" value="Create account"/>
+                </div>
+            </form>
+
+            <p class="loginhere">
+                Already have an account ?<a href="{% url 'login' %}" class="loginhere-link"> Log in</a>
+            </p>
+        </div>
+    </div>
+
+</div>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+
+{% endblock %}

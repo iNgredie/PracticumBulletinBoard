@@ -18,14 +18,14 @@
         padding: 11px 31px;
         box-sizing: border-box;
 		position: relative; display: inline-block;
-        border: solid 2px #ebebeb; 
+        border: solid 2px #ebebeb;
         background-color: #FFF;
-        font-size: 14px; 
-        font-weight: 600; 
+        font-size: 14px;
+        font-weight: 600;
         color: #888;
         text-align: center;
-		transition: 	border-color .15s ease-out, 
-					color .25s ease-out, 
+		transition: 	border-color .15s ease-out,
+					color .25s ease-out,
 					background-color .15s ease-out,
                     box-shadow .15s ease-out;
         @include border-radius(5px);
