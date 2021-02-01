@@ -24,7 +24,7 @@ class CustomUser(AbstractUser):
     last_name = models.CharField('last name', max_length=255)
     role = models.CharField('role', max_length=9, choices=ROLES, default='user')
     email = models.EmailField('email', unique=True)
-    phone_number = PhoneNumberField()
+    phone_number = PhoneNumberField(unique=True)
     time_to_call = models.CharField('time to call', max_length=3000)
     status = models.CharField('status', max_length=20, choices=STATUS_LIST, default='active')
 
@@ -59,6 +59,7 @@ class Ad(models.Model):
         on_delete=models.CASCADE,
         verbose_name='city'
     )
+    description = models.TextField('description')
     publication_date = models.DateTimeField('publication date', auto_now_add=True)
     price = models.DecimalField('price', max_digits=9, decimal_places=2)
     owner = models.ForeignKey(

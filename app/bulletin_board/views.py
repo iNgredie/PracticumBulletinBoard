@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView
 
 from bulletin_board.forms import AdCreateForm
+from bulletin_board.models import Ad
 
 
 class IndexView(TemplateView):
@@ -18,5 +19,6 @@ class AdUpdateView(UpdateView):
 
 
 class AdListView(ListView):
-    template_name = 'ads_list.html'
+    model = Ad
+    template_name = 'index.html'
 

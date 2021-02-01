@@ -7,15 +7,12 @@ from authentication.views import RegisterFormView, activate
 
 urlpatterns = [
     # custom urls + recaptcha decorator
-    path('register/', check_recaptcha(RegisterFormView.as_view()), name="register"),
+    path('register/', check_recaptcha(RegisterFormView.as_view()), name='register'),
     path('activate/<uidb64>/<token>',
          activate, name='activate'),
     # django.contrib.auth urls + recaptcha decorator
     path('login/', check_recaptcha(LoginView.as_view()), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    # django.contrib.auth urls + recaptcha decorator
-    path('password_change/', check_recaptcha(PasswordChangeView.as_view()), name='password_change'),
-    path('password_change/done/', PasswordChangeDoneView.as_view(), name='password_change_done'),
     # django.contrib.auth urls + recaptcha decorator
     path('password_reset/', check_recaptcha(PasswordResetView.as_view()), name='password_reset'),
     path('password_reset/done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
