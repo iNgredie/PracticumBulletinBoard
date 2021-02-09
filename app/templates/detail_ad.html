@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load bootstrap4 %}
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+{% bootstrap_messages %}
+
+<div class="container">
+    <div class="mt-5 "></div>
+
+    <div class="row">
+
+        <div class="col col-5  mx-auto">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <h1 class="h4">{% trans "Ad" %}</h1>
+                    <hr>
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">title: {{ object.title }}</h5>
+                            <p class="card-text">category: {{ object.category }}</p>
+                            <p class="card-text">city: {{ object.city }}</p>
+                            <p class="card-text">price: {{ object.price }}</p>
+                            <p class="card-text">owner: {{ object.owner }}</p>
+                            <p class="card-text">status: {{ object.status }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

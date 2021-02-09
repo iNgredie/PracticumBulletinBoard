@@ -67,7 +67,7 @@ class Ad(models.Model):
         on_delete=models.CASCADE,
         verbose_name='owner'
     )
-    views = models.IntegerField('views', default=0)
+    views = models.IntegerField('views', default=0, editable=False)
     photos = models.ImageField('photos', upload_to='photos/')
     status = models.CharField('status', max_length=20, choices=STATUS_LIST)
     created_at = models.DateTimeField('created at', auto_now_add=True)

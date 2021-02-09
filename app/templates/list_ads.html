@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load bootstrap4 %}
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+{% bootstrap_messages %}
+
+<div class="container">
+    <div class="mt-5 "></div>
+
+    <div class="row">
+
+        <div class="col col-5  mx-auto">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <h1 class="h4">{% trans "Ads list" %}</h1>
+                    <hr>
+                    {% for ad in object_list %}
+                    <li class="list-group-item"><a href="{{ ad.id }}">{{ ad.title }}</a></li>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
