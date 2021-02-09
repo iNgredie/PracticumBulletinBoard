@@ -1,13 +1,12 @@
+from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
-
-from django.conf import settings
+from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('authentication.urls')),
-    path('', include('bulletin_board.urls')),
+    path("admin/", admin.site.urls),
+    path("", include("authentication.urls")),
+    path("", include("bulletin_board.urls")),
 ]
 
 if settings.DEBUG:

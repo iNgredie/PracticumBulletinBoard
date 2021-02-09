@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from bulletin_board.models import CustomUser, Ad, Category, CitiesDirectory, RegionDirectory
+from bulletin_board.models import (Ad, Category, CitiesDirectory, CustomUser,
+                                   RegionDirectory)
 
 admin.site.register(CustomUser)
 admin.site.register(Ad)
