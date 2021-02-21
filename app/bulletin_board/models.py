@@ -2,7 +2,7 @@ import uuid
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
+
 
 from .managers import CustomUserManager
 
@@ -25,7 +25,8 @@ class CustomUser(AbstractUser):
     last_name = models.CharField("last name", max_length=255)
     role = models.CharField("role", max_length=9, choices=ROLES, default="user")
     email = models.EmailField("email", unique=True)
-    phone_number = PhoneNumberField(unique=True)
+    phone_number = models.CharField(max_length=20, unique=True)
+    # phone_number = PhoneNumberField(unique=True)
     time_to_call = models.CharField("time to call", max_length=3000)
     status = models.CharField(
         "status", max_length=20, choices=STATUS_LIST, default="active"
@@ -66,7 +67,7 @@ class Ad(models.Model):
     )
     views = models.IntegerField("views", default=0, editable=False)
     photos = models.ImageField("photos", upload_to="photos/")
-    status = models.CharField("status", max_length=20, choices=STATUS_LIST)
+    status = models.CharField("status", max_length=20, choices=STATUS_LIST, default="draft")
     created_at = models.DateTimeField("created at", auto_now_add=True)
     updated_at = models.DateTimeField("updated at", auto_now=True)
 

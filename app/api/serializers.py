@@ -1,0 +1,10 @@
+from rest_framework.serializers import ModelSerializer
+
+from bulletin_board.models import Ad
+
+
+class AdSerializer(ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = '__all__'
+
